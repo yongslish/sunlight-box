@@ -1,0 +1,12 @@
+node_modules
+dist
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example
+twa-project/
+android-sdk/
+public/audio/
+*.mp3
+*.mp4

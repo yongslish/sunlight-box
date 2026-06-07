@@ -1,0 +1,823 @@
+/* 所有样式限定在 #phoenix-page 内，不污染全局 */
+
+#phoenix-page {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial,
+    sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  touch-action: manipulation;
+  --portal-jitter-duration: 1.25s;
+  --portal-jitter-offset: 0.11vw;
+  --portal-outer-spin: 28s;
+  --portal-inner-spin: 22s;
+  --portal-shards-spin: 18s;
+  --portal-shards-spin-fast: 14s;
+  --portal-shards-spin-ultra: 12s;
+  --portal-ring-glow-a: rgba(220, 50, 60, 0.42);
+  --portal-ring-glow-b: rgba(255, 120, 130, 0.50);
+  --portal-ring-inner: rgba(255, 90, 100, 0.32);
+  --portal-flash-opacity: 0.2;
+  --portal-flash-duration: 3.2s;
+}
+
+#phoenix-page.phoenix-fx-war {
+  --portal-jitter-duration: 0.72s;
+  --portal-jitter-offset: 0.19vw;
+  --portal-outer-spin: 20s;
+  --portal-inner-spin: 16s;
+  --portal-shards-spin: 12s;
+  --portal-shards-spin-fast: 9s;
+  --portal-shards-spin-ultra: 6.5s;
+  --portal-ring-glow-a: rgba(220, 40, 50, 0.58);
+  --portal-ring-glow-b: rgba(255, 140, 150, 0.68);
+  --portal-ring-inner: rgba(255, 110, 120, 0.48);
+  --portal-flash-opacity: 0.46;
+  --portal-flash-duration: 2s;
+}
+
+#phoenix-page *,
+#phoenix-page *::before,
+#phoenix-page *::after {
+  box-sizing: border-box;
+}
+
+/* z-index: 0 黑色底 */
+#phoenix-page .phoenix-bg-black {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: #000000;
+}
+
+/* z-index: 1 背景图 */
+#phoenix-page .phoenix-bg-img {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 38%;
+  filter: brightness(0.96) contrast(1.08) saturate(1.05);
+  animation: phoenix-bg-breathe 10s ease-in-out infinite;
+  will-change: filter;
+  transform: translateZ(0);
+}
+
+@keyframes phoenix-bg-breathe {
+  0%,
+  100% {
+    filter: brightness(0.96) contrast(1.08) saturate(1.05);
+  }
+  50% {
+    filter: brightness(1.02) contrast(1.1) saturate(1.08);
+  }
+}
+
+/* z-index: 5 底部暗角 + 顶部轻金雾（不压暗整图） */
+#phoenix-page .phoenix-gold-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, #00000000 52%, #00000055 78%, #00000099 100%),
+    linear-gradient(to top, #e0555518, #00000000 28%);
+}
+
+#phoenix-page .phoenix-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  box-shadow: inset 0 0 18vw #00000066;
+}
+
+/* z-index: 10 飘落层 */
+#phoenix-page .phoenix-fall-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+#phoenix-page .phoenix-mars {
+  position: absolute;
+  top: 0;
+  border-radius: 50%;
+  background-color: #e05050;
+  box-shadow: 0 0 1.2vw #e0555599, 0 0 0.4vw #ff888855;
+  will-change: transform, opacity;
+}
+
+#phoenix-page .phoenix-ash {
+  position: absolute;
+  top: 0;
+  background-color: #aaaaaa;
+  will-change: transform, opacity;
+}
+
+#phoenix-page .phoenix-feather {
+  position: absolute;
+  top: 0;
+  width: 1.4vw;
+  height: 4.2vw;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 0 0.8vw #e0505066);
+}
+
+#phoenix-page .phoenix-feather::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 0.15vw;
+  height: 100%;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, #e05555, #e0505000);
+  border-radius: 50%;
+}
+
+#phoenix-page .phoenix-feather::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  top: 15%;
+  width: 80%;
+  height: 70%;
+  border: 0.12vw solid #e05555;
+  border-radius: 0 80% 80% 0;
+  border-left: none;
+  opacity: 0.85;
+}
+
+@keyframes phoenix-mars-fall {
+  0% {
+    transform: translate3d(var(--px-start), -4vh, 0);
+    opacity: var(--op-a);
+  }
+  25% {
+    opacity: var(--op-b);
+  }
+  50% {
+    opacity: var(--op-c);
+  }
+  75% {
+    opacity: var(--op-d);
+  }
+  100% {
+    transform: translate3d(var(--px-end), 105vh, 0);
+    opacity: var(--op-e);
+  }
+}
+
+@keyframes phoenix-ash-fall {
+  0% {
+    transform: translate3d(var(--px-start), -4vh, 0) rotate(var(--rot-start));
+  }
+  100% {
+    transform: translate3d(var(--px-end), 105vh, 0) rotate(var(--rot-end));
+  }
+}
+
+@keyframes phoenix-feather-fall {
+  0% {
+    transform: translate3d(var(--px-start), -6vh, 0) rotate(-8deg);
+  }
+  25% {
+    transform: translate3d(calc(var(--px-start) + 2vw), 22vh, 0) rotate(6deg);
+  }
+  50% {
+    transform: translate3d(calc(var(--px-start) - 2vw), 52vh, 0) rotate(-5deg);
+  }
+  75% {
+    transform: translate3d(calc(var(--px-start) + 1.5vw), 78vh, 0) rotate(4deg);
+  }
+  100% {
+    transform: translate3d(var(--px-end), 108vh, 0) rotate(0deg);
+  }
+}
+
+#phoenix-page .phoenix-mars.is-falling {
+  animation: phoenix-mars-fall var(--dur) linear infinite;
+  animation-delay: var(--delay);
+}
+
+#phoenix-page .phoenix-ash.is-falling {
+  animation: phoenix-ash-fall var(--dur) linear infinite;
+  animation-delay: var(--delay);
+}
+
+#phoenix-page .phoenix-feather.is-falling {
+  animation: phoenix-feather-fall var(--dur) linear infinite;
+}
+
+/* z-index: 48 凤凰 */
+#phoenix-page .phoenix-flight-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 48;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+#phoenix-page .phoenix-bird {
+  position: absolute;
+  bottom: 18vh;
+  left: -12vw;
+  width: 5vw;
+  height: 3vw;
+  opacity: 0;
+}
+
+#phoenix-page .phoenix-bird-body {
+  position: absolute;
+  width: 3.2vw;
+  height: 1.4vw;
+  background: linear-gradient(135deg, #e05050, #cc3030);
+  border-radius: 60% 40% 50% 50%;
+  transform: rotate(-8deg);
+  box-shadow: 0 0 1.2vw #e0555555;
+}
+
+#phoenix-page .phoenix-bird-wing {
+  position: absolute;
+  right: 0.2vw;
+  top: -0.6vw;
+  width: 2.4vw;
+  height: 1.8vw;
+  border: 0.25vw solid #e05050;
+  border-bottom: none;
+  border-left: none;
+  border-radius: 0 100% 0 0;
+  opacity: 0.9;
+}
+
+#phoenix-page .phoenix-bird-trail {
+  position: absolute;
+  left: -8vw;
+  top: 50%;
+  width: 10vw;
+  height: 0.35vw;
+  background: linear-gradient(to right, #e0505000, #e0555566, #e0505000);
+  transform: translateY(-50%);
+  opacity: 0;
+}
+
+#phoenix-page .phoenix-bird.is-flying {
+  animation: phoenix-bird-fly 2s ease-in-out forwards;
+}
+
+#phoenix-page .phoenix-bird.is-flying .phoenix-bird-trail {
+  animation: phoenix-trail-fade 3s ease-in-out 0.3s forwards;
+}
+
+@keyframes phoenix-bird-fly {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  8% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.85;
+    transform: translate3d(115vw, -12vh, 0);
+  }
+}
+
+@keyframes phoenix-trail-fade {
+  0% {
+    opacity: 0.7;
+  }
+  40% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* z-index: 49 微光粒子层 */
+#phoenix-page .phoenix-spark-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 49;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+#phoenix-page .phoenix-spark {
+  position: absolute;
+  border-radius: 50%;
+  background-color: #e05555;
+  will-change: transform, opacity;
+}
+
+/* z-index: 50 火焰波纹 */
+#phoenix-page .phoenix-ripple-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+#phoenix-page .phoenix-ripple {
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin-left: 0;
+  margin-top: 0;
+  border: 0.45vw solid #e05555;
+  border-radius: 50%;
+  opacity: 0.42;
+  box-shadow: 0 0 3vw #e0555566, inset 0 0 1.5vw #e0505033;
+  transform: translate(-50%, -50%) scale(0);
+  animation: phoenix-ripple-expand 0.8s ease-in-out forwards;
+}
+
+@keyframes phoenix-ripple-expand {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.42;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  100% {
+    width: 50vw;
+    height: 50vw;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* 隐藏备用触发位：仅内部用于 7 连击，不给视觉提示 */
+#phoenix-page .phoenix-leader-sun-hit {
+  position: absolute;
+  left: 50%;
+  top: 11vh;
+  z-index: 65;
+  width: max(44px, 9vw);
+  height: max(44px, 9vw);
+  transform: translate(-50%, -50%);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  opacity: 0;
+  padding: 0;
+}
+
+#phoenix-page .phoenix-leader-sun-hit.is-dimming {
+  animation: phoenix-leader-sun-dim 1.5s ease forwards;
+}
+
+@keyframes phoenix-leader-sun-dim {
+  from {
+    opacity: 0.2;
+    filter: brightness(0.28);
+  }
+  to {
+    opacity: 0.04;
+    filter: brightness(0.08);
+  }
+}
+
+#phoenix-page .phoenix-leader-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.86) 72%, #000 100%);
+}
+
+#phoenix-page .phoenix-leader-mask.is-closing {
+  animation: phoenix-leader-close 1s ease forwards;
+}
+
+@keyframes phoenix-leader-close {
+  from {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* z-index: 98 彩蛋 */
+#phoenix-page .phoenix-easter {
+  position: absolute;
+  left: 50%;
+  bottom: 22vh;
+  z-index: 98;
+  width: 86vw;
+  max-width: 86vw;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: 2.8vw;
+  font-weight: 300;
+  color: #ffffff;
+  opacity: 0;
+  pointer-events: none;
+  line-height: 1.5;
+}
+
+#phoenix-page .phoenix-easter.is-visible {
+  animation: phoenix-easter-show 5s ease-in-out forwards;
+}
+
+@keyframes phoenix-easter-show {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.15;
+  }
+  85% {
+    opacity: 0.15;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* z-index: 100 前景科技圆环 + 圆环内文案 */
+#phoenix-page .phoenix-portal {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: min(68vw, 430px);
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  pointer-events: none;
+  animation: phoenix-portal-jitter var(--portal-jitter-duration) steps(2, end) infinite;
+}
+
+#phoenix-page .phoenix-portal-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 0.22vw solid rgba(210, 45, 55, 0.88);
+  box-shadow:
+    0 0 3.4vw var(--portal-ring-glow-a),
+    0 0 1.2vw var(--portal-ring-glow-b),
+    inset 0 0 2.3vw var(--portal-ring-inner);
+}
+
+/* 外层环：涟漪扩散（雨滴入湖） */
+#phoenix-page .phoenix-portal-ring--outer {
+  animation: phoenix-portal-breathe 5s ease-in-out infinite;
+}
+
+#phoenix-page .phoenix-portal-ring--outer::before,
+#phoenix-page .phoenix-portal-ring--outer::after {
+  content: '';
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  border: 0.1vw solid rgba(220, 60, 70, 0.55);
+  animation: phoenix-ripple-wave 4.5s ease-out infinite;
+}
+#phoenix-page .phoenix-portal-ring--outer::after {
+  animation-delay: 2.25s;
+  border-color: rgba(255, 90, 100, 0.35);
+}
+
+#phoenix-page .phoenix-portal-ring--inner {
+  inset: 13%;
+  border-color: rgba(220, 60, 70, 0.78);
+  border-width: 0.18vw;
+  animation: phoenix-portal-breathe 6s ease-in-out infinite;
+}
+
+#phoenix-page .phoenix-portal-shards {
+  position: absolute;
+  inset: -13%;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(
+      from 0deg,
+      rgba(220, 70, 80, 0.55) 0deg 1.2deg,
+      rgba(220, 70, 80, 0) 1.2deg 4.8deg,
+      rgba(200, 40, 50, 0.42) 4.8deg 6.1deg,
+      rgba(200, 40, 50, 0) 6.1deg 10.4deg
+    ),
+    repeating-conic-gradient(
+      from 23deg,
+      rgba(240, 90, 100, 0.42) 0deg 0.85deg,
+      rgba(240, 90, 100, 0) 0.85deg 3.4deg,
+      rgba(200, 50, 60, 0.32) 3.4deg 4.4deg,
+      rgba(200, 50, 60, 0) 4.4deg 7.6deg
+    );
+  filter: drop-shadow(0 0 0.55vw rgba(220, 60, 70, 0.72));
+  -webkit-mask-image: radial-gradient(circle, transparent 0 46%, #000 56% 84%, transparent 94%);
+  mask-image: radial-gradient(circle, transparent 0 46%, #000 56% 84%, transparent 94%);
+  animation: phoenix-portal-shards var(--portal-shards-spin) linear infinite;
+}
+
+#phoenix-page .phoenix-portal-shards::before,
+#phoenix-page .phoenix-portal-shards::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  -webkit-mask-image: radial-gradient(circle, transparent 0 47%, #000 58% 84%, transparent 95%);
+  mask-image: radial-gradient(circle, transparent 0 47%, #000 58% 84%, transparent 95%);
+}
+
+#phoenix-page .phoenix-portal-shards::before {
+  background:
+    repeating-conic-gradient(
+      from 9deg,
+      rgba(230, 70, 80, 0.45) 0deg 0.95deg,
+      rgba(230, 70, 80, 0) 0.95deg 2.9deg,
+      rgba(210, 50, 65, 0.32) 2.9deg 3.7deg,
+      rgba(210, 50, 65, 0) 3.7deg 6.8deg
+    );
+  animation: phoenix-portal-shards var(--portal-shards-spin-fast) linear infinite reverse;
+}
+
+#phoenix-page .phoenix-portal-shards::after {
+  background:
+    repeating-conic-gradient(
+      from 35deg,
+      rgba(240, 90, 100, 0.28) 0deg 0.7deg,
+      rgba(240, 90, 100, 0) 0.7deg 2.2deg
+    );
+  animation: phoenix-portal-shards var(--portal-shards-spin-ultra) linear infinite;
+  filter: blur(0.45px);
+}
+
+#phoenix-page .phoenix-portal-flash {
+  position: absolute;
+  inset: -12%;
+  border-radius: 50%;
+  opacity: var(--portal-flash-opacity);
+  background:
+    conic-gradient(
+      from 0deg,
+      rgba(255, 180, 190, 0) 0deg,
+      rgba(255, 140, 150, 0.75) 3deg,
+      rgba(255, 180, 190, 0) 8deg,
+      rgba(230, 80, 95, 0.6) 16deg,
+      rgba(230, 80, 95, 0) 24deg,
+      rgba(255, 130, 140, 0.7) 32deg,
+      rgba(255, 130, 140, 0) 40deg,
+      rgba(220, 60, 75, 0.65) 52deg,
+      rgba(220, 60, 75, 0) 60deg,
+      rgba(255, 150, 160, 0.75) 72deg,
+      rgba(255, 150, 160, 0) 80deg,
+      rgba(230, 75, 90, 0.62) 92deg,
+      rgba(230, 75, 90, 0) 100deg,
+      rgba(255, 145, 155, 0.73) 112deg,
+      rgba(255, 145, 155, 0) 120deg,
+      rgba(220, 65, 80, 0.6) 132deg,
+      rgba(220, 65, 80, 0) 140deg,
+      rgba(255, 140, 150, 0.78) 152deg,
+      rgba(255, 140, 150, 0) 160deg,
+      rgba(230, 70, 85, 0.58) 172deg,
+      rgba(230, 70, 85, 0) 180deg,
+      rgba(255, 150, 160, 0.72) 192deg,
+      rgba(255, 150, 160, 0) 200deg,
+      rgba(215, 55, 70, 0.62) 212deg,
+      rgba(215, 55, 70, 0) 220deg,
+      rgba(255, 135, 145, 0.74) 232deg,
+      rgba(255, 135, 145, 0) 240deg,
+      rgba(230, 80, 95, 0.6) 252deg,
+      rgba(230, 80, 95, 0) 260deg,
+      rgba(255, 145, 155, 0.76) 272deg,
+      rgba(255, 145, 155, 0) 280deg,
+      rgba(220, 60, 75, 0.65) 292deg,
+      rgba(220, 60, 75, 0) 300deg,
+      rgba(255, 140, 150, 0.73) 312deg,
+      rgba(255, 140, 150, 0) 320deg,
+      rgba(230, 75, 90, 0.62) 332deg,
+      rgba(230, 75, 90, 0) 340deg,
+      rgba(255, 150, 160, 0.78) 352deg,
+      rgba(255, 150, 160, 0) 360deg
+    );
+  -webkit-mask-image: radial-gradient(circle, transparent 0 47%, #000 58% 86%, transparent 95%);
+  mask-image: radial-gradient(circle, transparent 0 47%, #000 58% 86%, transparent 95%);
+  mix-blend-mode: screen;
+  animation:
+    phoenix-portal-flash-rotate 6s linear infinite,
+    phoenix-portal-random-flash var(--portal-flash-duration) steps(1, end) infinite;
+}
+
+#phoenix-page .phoenix-fx-toggle {
+  position: absolute;
+  right: max(0.8rem, env(safe-area-inset-right));
+  top: max(0.8rem, env(safe-area-inset-top));
+  z-index: 120;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 140, 150, 0.36);
+  padding: 0;
+  font-size: 0.95rem;
+  line-height: 1;
+  opacity: 0.24;
+}
+
+#phoenix-page .phoenix-fx-toggle:hover,
+#phoenix-page .phoenix-fx-toggle:focus-visible {
+  opacity: 0.5;
+}
+
+#phoenix-page .phoenix-portal-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 72%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  text-align: center;
+  font-size: clamp(1rem, 3.8vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.6;
+  color: #ffc8cc;
+  text-shadow:
+    0 0.2vw 1.8vw #000000dd,
+    0 0 1vw rgba(220, 50, 60, 0.38);
+}
+
+/* ---- 涟漪波扩散动画 ---- */
+@keyframes phoenix-ripple-wave {
+  0% {
+    transform: scale(0.75);
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.25;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+@keyframes phoenix-portal-spin {
+  from {
+    transform: rotate(0deg) scale(1);
+  }
+  to {
+    transform: rotate(360deg) scale(1.006);
+  }
+}
+
+@keyframes phoenix-portal-breathe {
+  0%,
+  100% {
+    transform: scale(0.96);
+    opacity: 0.82;
+    filter: brightness(0.9);
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+    filter: brightness(1.3);
+  }
+}
+
+@keyframes phoenix-portal-shards {
+  from {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.88;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.06);
+    opacity: 1;
+  }
+  to {
+    transform: rotate(360deg) scale(1);
+    opacity: 0.88;
+  }
+}
+
+@keyframes phoenix-portal-jitter {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  15% {
+    transform: translate(calc(-50% + var(--portal-jitter-offset)), calc(-50% - (var(--portal-jitter-offset) * 0.55))) rotate(0.24deg);
+  }
+  30% {
+    transform: translate(calc(-50% - (var(--portal-jitter-offset) * 0.86)), calc(-50% + (var(--portal-jitter-offset) * 0.55))) rotate(-0.22deg);
+  }
+  45% {
+    transform: translate(calc(-50% + (var(--portal-jitter-offset) * 0.72)), calc(-50% + (var(--portal-jitter-offset) * 0.9))) rotate(0.26deg);
+  }
+  60% {
+    transform: translate(calc(-50% - (var(--portal-jitter-offset) * 0.58)), calc(-50% - (var(--portal-jitter-offset) * 0.72))) rotate(-0.24deg);
+  }
+  75% {
+    transform: translate(calc(-50% + (var(--portal-jitter-offset) * 0.86)), calc(-50% - (var(--portal-jitter-offset) * 0.42))) rotate(0.18deg);
+  }
+}
+
+@keyframes phoenix-portal-ring-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 3.4vw var(--portal-ring-glow-a),
+      0 0 1.2vw var(--portal-ring-glow-b),
+      inset 0 0 2.3vw var(--portal-ring-inner);
+  }
+  50% {
+    box-shadow:
+      0 0 5.8vw rgba(220, 55, 65, 0.9),
+      0 0 2.9vw rgba(255, 120, 140, 0.9),
+      inset 0 0 3.8vw rgba(240, 80, 95, 0.65);
+  }
+}
+
+@keyframes phoenix-portal-ring-pulse-inner {
+  0%,
+  100% {
+    opacity: 0.92;
+    filter: brightness(0.96);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.25);
+  }
+}
+
+@keyframes phoenix-portal-flash-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes phoenix-portal-random-flash {
+  0%,
+  8%,
+  18%,
+  31%,
+  47%,
+  63%,
+  79%,
+  92%,
+  100% {
+    opacity: calc(var(--portal-flash-opacity) * 0.5);
+  }
+  10%,
+  33%,
+  51%,
+  66%,
+  83% {
+    opacity: calc(var(--portal-flash-opacity) * 1.3);
+  }
+  24%,
+  57%,
+  88% {
+    opacity: calc(var(--portal-flash-opacity) * 1.85);
+  }
+}
+
+/* z-index: 100 文案区（底部字幕式，不挡山体） */
+#phoenix-page .phoenix-text-dock {
+  position: absolute;
+  left: 50%;
+  bottom: max(11vh, calc(env(safe-area-inset-bottom, 0px) + 8vh));
+  z-index: 100;
+  width: min(88vw, 22rem);
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  padding: 0 3vw;
+}
+
+#phoenix-page .phoenix-motto {
+  margin: 1.4vh 0 0;
+  font-size: clamp(0.6875rem, 2.4vw, 0.8125rem);
+  font-weight: 300;
+  color: #ff8888;
+  opacity: 0.72;
+  line-height: 1.5;
+  text-shadow: 0 0.2vw 1.2vw #000000aa;
+}
+
+#phoenix-page .phoenix-audio-hidden {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}

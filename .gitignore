@@ -7,6 +7,4 @@ dist
 !.env.example
 twa-project/
 android-sdk/
-public/audio/
-*.mp3
-*.mp4
+public/audio/jingwei.mp3

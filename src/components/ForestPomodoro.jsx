@@ -248,31 +248,31 @@ export function ForestPomodoro({ record, onSave }) {
   }, [remark]);
 
   // ====== 白噪音 ======
-  useEffect(() => {
+  const playNoise = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.src = '';
-      audioRef.current = null;
     }
-    if (noiseId === 'none') return;
-    const noise = WHITE_NOISES.find(n => n.id === noiseId);
+    const noise = WHITE_NOISES.find(n => n.id === 'rain');
     if (!noise?.src) return;
     const audio = new Audio(noise.src);
     audio.loop = true;
     audio.volume = 0.45;
     audioRef.current = audio;
     audio.play().catch(() => {});
-  }, [noiseId]);
+  }, []);
+
+  const stopNoise = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.src = '';
+      audioRef.current = null;
+    }
+  }, []);
 
   useEffect(() => {
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.src = '';
-        audioRef.current = null;
-      }
-    };
-  }, []);
+    return () => stopNoise();
+  }, [stopNoise]);
 
   // ====== 番茄倒计时 ======
   const tick = useCallback(() => {
@@ -335,14 +335,16 @@ export function ForestPomodoro({ record, onSave }) {
     statusRef.current = 'running';
     setStatus('running');
     setIsDone(false);
-    setNoiseId('rain'); // 自动开启白噪音
+    setNoiseId('rain'); // 标记 UI 状态
+    playNoise(); // 在点击事件中直接播放，避免浏览器拦截
     saveActivePomo({ modeId, phase, endAt: endAtRef.current });
   };
 
   const pause = () => {
     statusRef.current = 'idle';
     setStatus('idle');
-    setNoiseId('none'); // 暂停时关闭白噪音
+    setNoiseId('none');
+    stopNoise();
     clearActivePomo();
   };
 
@@ -351,7 +353,6 @@ export function ForestPomodoro({ record, onSave }) {
     setPhase('focus');
     phaseRef.current = 'focus';
     setSecondsLeft(mode.focusMin * 60);
-    setNoiseId('none'); // 重置时关闭白噪音
     setIsDone(false);
   };
 
@@ -363,7 +364,8 @@ export function ForestPomodoro({ record, onSave }) {
     endAtRef.current = Date.now() + sec * 1000;
     statusRef.current = 'running';
     setStatus('running');
-    setNoiseId('rain'); // 自动开启白噪音
+    setNoiseId('rain');
+    playNoise();
     saveActivePomo({ modeId, phase: 'focus', endAt: endAtRef.current });
   };
 

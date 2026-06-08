@@ -57,25 +57,65 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 0.22vw;
-  height: 38%;
+  width: 0.15vw;
+  min-width: 1.2px;
   transform-origin: center bottom;
-  background: linear-gradient(to top, #ffd70000, #ffd166);
+  background: linear-gradient(to top, #ffd70000 10%, #ffd166 50%, #fff8cc);
   border-radius: 1vw;
-  opacity: 0.85;
+  opacity: 0;
+  animation: anxiety-ray-flicker 2.5s ease-in-out infinite;
 }
 
-#phoenix-page .phoenix-anxiety-sun__ray--a {
+/* 8 根芒刺均匀分布 + 长短交替 */
+#phoenix-page .phoenix-anxiety-sun__ray--0 {
   transform: translate(-50%, -100%) rotate(0deg);
+  height: 38%;
+  animation-delay: 0s;
 }
-#phoenix-page .phoenix-anxiety-sun__ray--b {
+#phoenix-page .phoenix-anxiety-sun__ray--1 {
   transform: translate(-50%, -100%) rotate(45deg);
+  height: 30%;
+  opacity: 0.55;
+  animation-delay: 0.3s;
 }
-#phoenix-page .phoenix-anxiety-sun__ray--c {
+#phoenix-page .phoenix-anxiety-sun__ray--2 {
   transform: translate(-50%, -100%) rotate(90deg);
+  height: 36%;
+  animation-delay: 0.6s;
 }
-#phoenix-page .phoenix-anxiety-sun__ray--d {
+#phoenix-page .phoenix-anxiety-sun__ray--3 {
   transform: translate(-50%, -100%) rotate(135deg);
+  height: 28%;
+  opacity: 0.5;
+  animation-delay: 0.9s;
+}
+#phoenix-page .phoenix-anxiety-sun__ray--4 {
+  transform: translate(-50%, -100%) rotate(180deg);
+  height: 34%;
+  animation-delay: 1.2s;
+}
+#phoenix-page .phoenix-anxiety-sun__ray--5 {
+  transform: translate(-50%, -100%) rotate(225deg);
+  height: 26%;
+  opacity: 0.45;
+  animation-delay: 1.5s;
+}
+#phoenix-page .phoenix-anxiety-sun__ray--6 {
+  transform: translate(-50%, -100%) rotate(270deg);
+  height: 32%;
+  animation-delay: 1.8s;
+}
+#phoenix-page .phoenix-anxiety-sun__ray--7 {
+  transform: translate(-50%, -100%) rotate(315deg);
+  height: 24%;
+  opacity: 0.4;
+  animation-delay: 2.1s;
+}
+
+@keyframes anxiety-ray-flicker {
+  0%, 100% { opacity: 0.65; }
+  30% { opacity: 0.9; }
+  60% { opacity: 0.45; }
 }
 
 #phoenix-page .phoenix-anxiety-sun__halo {

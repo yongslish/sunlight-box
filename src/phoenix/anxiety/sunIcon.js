@@ -19,10 +19,14 @@ export function createSunIcon(opts = {}) {
     <span class="phoenix-anxiety-sun__backdrop" aria-hidden="true"></span>
     <span class="phoenix-anxiety-sun__halo" aria-hidden="true"></span>
     <span class="phoenix-anxiety-sun__disc" aria-hidden="true"></span>
-    <span class="phoenix-anxiety-sun__ray phoenix-anxiety-sun__ray--a" aria-hidden="true"></span>
-    <span class="phoenix-anxiety-sun__ray phoenix-anxiety-sun__ray--b" aria-hidden="true"></span>
-    <span class="phoenix-anxiety-sun__ray phoenix-anxiety-sun__ray--c" aria-hidden="true"></span>
-    <span class="phoenix-anxiety-sun__ray phoenix-anxiety-sun__ray--d" aria-hidden="true"></span>
+    <span class="phoenix-anxiety-sun__ray phoenix-anxiety-sun__ray--0" aria-hidden="true"></span>
+    <span class="phoenix-anxiety-sun__ray phoenix-anxiety-sun__ray--1" aria-hidden="true"></span>
+    <span class="phoenix-anxiety-sun__ray phoenix-anxiety-sun__ray--2" aria-hidden="true"></span>
+    <span class="phoenix-anxiety-sun__ray phoenix-anxiety-sun__ray--3" aria-hidden="true"></span>
+    <span class="phoenix-anxiety-sun__ray phoenix-anxiety-sun__ray--4" aria-hidden="true"></span>
+    <span class="phoenix-anxiety-sun__ray phoenix-anxiety-sun__ray--5" aria-hidden="true"></span>
+    <span class="phoenix-anxiety-sun__ray phoenix-anxiety-sun__ray--6" aria-hidden="true"></span>
+    <span class="phoenix-anxiety-sun__ray phoenix-anxiety-sun__ray--7" aria-hidden="true"></span>
   `;
   return el;
 }

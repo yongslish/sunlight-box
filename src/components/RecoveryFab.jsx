@@ -36,7 +36,7 @@ export function RecoveryFab({ onOpen, visible }) {
           🌱
         </span>
         <span className="recovery-fab-label" aria-hidden>
-          恢复
+          专注
         </span>
       </button>
     </div>

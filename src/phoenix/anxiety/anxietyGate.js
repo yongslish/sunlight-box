@@ -9,16 +9,18 @@ export function isNinePmWindow(now = new Date()) {
   return now.getHours() === 21;
 }
 
-/** 入口是否应激活（全天显示，当日未移交关闭即可见） */
+/** 入口是否应激活（时间窗内且当日未移交关闭） */
 export function isAnxietyGateActive(now = new Date(), force = false) {
   if (force) return true;
-  // 已改为全天显示，不再限制 21:00-21:59
-  return !isGateClosedToday(now);
+  return isNinePmWindow(now) && !isGateClosedToday(now);
 }
 
 /** 调试用：返回入口未激活的原因 */
 export function getGateInactiveReason(now = new Date(), force = false) {
   if (force) return null;
+  if (!isNinePmWindow(now)) {
+    return `当前时间 ${now.toLocaleTimeString()}，入口仅在 21:00–21:59 出现`;
+  }
   if (isGateClosedToday(now)) {
     return '今日已移交过，入口已关闭（可在控制台执行 clearGateClosedForToday 重新开放）';
   }

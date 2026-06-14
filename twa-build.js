@@ -65,9 +65,9 @@ async function generateKeystore() {
   try {
     await keyTool.createSigningKey({
       path: keystorePath,
-      password: 'sunlight123',
+      password: 'sunlight-apk-key-2026',
       alias: 'android',
-      keypassword: 'sunlight123',
+      keypassword: 'sunlight-apk-key-2026',
       fullName: 'SunLight Box',
       organization: 'SunLight',
       organizationalUnit: 'Dev',
